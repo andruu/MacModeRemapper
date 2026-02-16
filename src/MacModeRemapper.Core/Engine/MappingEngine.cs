@@ -215,6 +215,16 @@ public sealed class MappingEngine
         if (IsModifierKey(e.VirtualKeyCode))
             return false;
 
+        // Global passthrough keys (Tab, F4, Space): re-engage Alt so native
+        // behavior works (e.g., user does Alt+` then switches to Alt+Tab)
+        if (e.IsKeyDown && IsGlobalPassthrough(e.VirtualKeyCode))
+        {
+            Logger.Debug($"ChordActive -> Idle: re-engaging Alt for global passthrough VK 0x{e.VirtualKeyCode:X2}");
+            KeySender.SendBatch(new[] { KeySender.MakeKeyDown(NativeMethods.VK_LMENU) });
+            _state = State.Idle;
+            return false; // Let the key through; system now sees Alt+key
+        }
+
         // Another keydown: check for window cycling or a new chord mapping
         if (e.IsKeyDown)
         {

@@ -215,9 +215,17 @@ public sealed class MappingEngine
         if (IsModifierKey(e.VirtualKeyCode))
             return false;
 
-        // Another keydown: check for a new chord mapping
+        // Another keydown: check for window cycling or a new chord mapping
         if (e.IsKeyDown)
         {
+            // Alt+` window cycling (repeatable while Alt is held)
+            if (e.VirtualKeyCode == NativeMethods.VK_OEM_3 && !_modState.ShiftDown)
+            {
+                Logger.Debug("Window cycle (repeat) triggered in ChordActive");
+                WindowCycler.CycleNextWindow();
+                return true;
+            }
+
             string processName = _processDetector.GetForegroundProcessName();
             var triggerMods = _modState.ActiveModifiers;
             var mapping = _profiles.GetMapping(processName, triggerMods, e.VirtualKeyCode);

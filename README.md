@@ -256,7 +256,7 @@ A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal. Warp on W
 | Cmd+C | Alt+C | Ctrl+Shift+C | Copy |
 | Cmd+V | Alt+V | Ctrl+Shift+V | Paste |
 | Cmd+F | Alt+F | Ctrl+Shift+F | Find |
-| Cmd+A | Alt+A | Ctrl+Shift+A | Select all blocks |
+| Cmd+A | Alt+A | Ctrl+A | Select all |
 | Cmd+Z | Alt+Z | Ctrl+Z | Undo |
 | Cmd+Shift+Z | Alt+Shift+Z | Ctrl+Shift+Z | Redo |
 | Cmd+Q | Alt+Q | Alt+F4 | Quit |

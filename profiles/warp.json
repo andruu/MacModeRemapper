@@ -5,7 +5,7 @@
     { "trigger": "Alt+C", "action": "Ctrl+Shift+C" },
     { "trigger": "Alt+V", "action": "Ctrl+Shift+V" },
     { "trigger": "Alt+F", "action": "Ctrl+Shift+F" },
-    { "trigger": "Alt+A", "action": "Ctrl+Shift+A" },
+    { "trigger": "Alt+A", "action": "Ctrl+A" },
     { "trigger": "Alt+Z", "action": "Ctrl+Z" },
     { "trigger": "Alt+Shift+Z", "action": "Ctrl+Shift+Z" },
     { "trigger": "Alt+Q", "action": "Alt+F4" },

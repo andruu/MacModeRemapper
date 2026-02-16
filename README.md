@@ -57,7 +57,7 @@ Download the latest release from the [Releases](../../releases) page. Extract th
 ### Option 2: Build from Source
 
 ```powershell
-git clone https://github.com/youruser/MacModeRemapper.git
+git clone https://github.com/andruu/MacModeRemapper.git
 cd MacModeRemapper
 dotnet build
 dotnet run --project src/MacModeRemapper.App
@@ -95,7 +95,7 @@ Press **Ctrl+Alt+Backspace** at any time to immediately disable Mac Mode. A noti
 
 ## Shortcut Reference
 
-Below is every shortcut mapped in the default profiles. In the tables, **Mac Shortcut** is what you press (using Left Alt as Cmd), and **Windows Action** is what gets sent to the app.
+Below is every shortcut mapped in the default profiles. **"You Press"** is the physical keys you hit on your Windows keyboard (Left Alt acts as Cmd). **"Windows Receives"** is what the app sends to the system.
 
 ### Global (All Apps)
 
@@ -103,55 +103,55 @@ These are the default fallback mappings. They apply to any app that doesn't have
 
 #### Essentials
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+C | Ctrl+C | Copy |
-| Cmd+V | Ctrl+V | Paste |
-| Cmd+X | Ctrl+X | Cut |
-| Cmd+A | Ctrl+A | Select all |
-| Cmd+Z | Ctrl+Z | Undo |
-| Cmd+Shift+Z | Ctrl+Y | Redo |
-| Cmd+S | Ctrl+S | Save |
-| Cmd+Shift+S | Ctrl+Shift+S | Save as |
-| Cmd+Shift+V | Ctrl+Shift+V | Paste without formatting |
-| Cmd+Q | Alt+F4 | Quit app |
+| Alt+C | Ctrl+C | Copy |
+| Alt+V | Ctrl+V | Paste |
+| Alt+X | Ctrl+X | Cut |
+| Alt+A | Ctrl+A | Select all |
+| Alt+Z | Ctrl+Z | Undo |
+| Alt+Shift+Z | Ctrl+Y | Redo |
+| Alt+S | Ctrl+S | Save |
+| Alt+Shift+S | Ctrl+Shift+S | Save as |
+| Alt+Shift+V | Ctrl+Shift+V | Paste without formatting |
+| Alt+Q | Alt+F4 | Quit app |
 
 #### Text Navigation
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+Left | Home | Beginning of line |
-| Cmd+Right | End | End of line |
-| Cmd+Up | Ctrl+Home | Beginning of document |
-| Cmd+Down | Ctrl+End | End of document |
-| Cmd+Shift+Left | Shift+Home | Select to beginning of line |
-| Cmd+Shift+Right | Shift+End | Select to end of line |
-| Cmd+Shift+Up | Ctrl+Shift+Home | Select to beginning of document |
-| Cmd+Shift+Down | Ctrl+Shift+End | Select to end of document |
-| Cmd+Backspace | Ctrl+Backspace | Delete word left |
+| Alt+Left | Home | Beginning of line |
+| Alt+Right | End | End of line |
+| Alt+Up | Ctrl+Home | Beginning of document |
+| Alt+Down | Ctrl+End | End of document |
+| Alt+Shift+Left | Shift+Home | Select to beginning of line |
+| Alt+Shift+Right | Shift+End | Select to end of line |
+| Alt+Shift+Up | Ctrl+Shift+Home | Select to beginning of document |
+| Alt+Shift+Down | Ctrl+Shift+End | Select to end of document |
+| Alt+Backspace | Ctrl+Backspace | Delete word left |
 
 #### Common App Shortcuts
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+F | Ctrl+F | Find |
-| Cmd+N | Ctrl+N | New |
-| Cmd+O | Ctrl+O | Open |
-| Cmd+W | Ctrl+W | Close tab/window |
-| Cmd+T | Ctrl+T | New tab |
-| Cmd+P | Ctrl+P | Print / Quick open |
-| Cmd+B | Ctrl+B | Bold |
-| Cmd+I | Ctrl+I | Italic |
-| Cmd+U | Ctrl+U | Underline |
-| Cmd+K | Ctrl+K | Insert link |
+| Alt+F | Ctrl+F | Find |
+| Alt+N | Ctrl+N | New |
+| Alt+O | Ctrl+O | Open |
+| Alt+W | Ctrl+W | Close tab/window |
+| Alt+T | Ctrl+T | New tab |
+| Alt+P | Ctrl+P | Print / Quick open |
+| Alt+B | Ctrl+B | Bold |
+| Alt+I | Ctrl+I | Italic |
+| Alt+U | Ctrl+U | Underline |
+| Alt+K | Ctrl+K | Insert link |
 
 #### Screenshots
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+Shift+3 | Win+Shift+S | Screenshot (opens Snipping Tool) |
-| Cmd+Shift+4 | Win+Shift+S | Screenshot (opens Snipping Tool) |
-| Cmd+Shift+5 | Win+Shift+S | Screenshot (opens Snipping Tool) |
+| Alt+Shift+3 | Win+Shift+S | Screenshot (opens Snipping Tool) |
+| Alt+Shift+4 | Win+Shift+S | Screenshot (opens Snipping Tool) |
+| Alt+Shift+5 | Win+Shift+S | Screenshot (opens Snipping Tool) |
 
 ---
 
@@ -161,24 +161,24 @@ Process names: `chrome`, `msedge`, `brave`, `firefox`, `opera`
 
 Includes all global shortcuts plus:
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+T | Ctrl+T | New tab |
-| Cmd+W | Ctrl+W | Close tab |
-| Cmd+Shift+T | Ctrl+Shift+T | Reopen closed tab |
-| Cmd+L | Ctrl+L | Focus address bar |
-| Cmd+R | Ctrl+R | Reload page |
-| Cmd+Shift+[ | Ctrl+Shift+Tab | Previous tab |
-| Cmd+Shift+] | Ctrl+Tab | Next tab |
-| Cmd+1 through Cmd+9 | Ctrl+1 through Ctrl+9 | Switch to tab N |
-| Cmd+N | Ctrl+N | New window |
-| Cmd+Shift+N | Ctrl+Shift+N | New incognito/private window |
-| Cmd+D | Ctrl+D | Bookmark page |
-| Cmd+G | Ctrl+G | Find next |
-| Cmd+[ | Alt+Left | Browser back |
-| Cmd+] | Alt+Right | Browser forward |
+| Alt+T | Ctrl+T | New tab |
+| Alt+W | Ctrl+W | Close tab |
+| Alt+Shift+T | Ctrl+Shift+T | Reopen closed tab |
+| Alt+L | Ctrl+L | Focus address bar |
+| Alt+R | Ctrl+R | Reload page |
+| Alt+Shift+[ | Ctrl+Shift+Tab | Previous tab |
+| Alt+Shift+] | Ctrl+Tab | Next tab |
+| Alt+1 through Alt+9 | Ctrl+1 through Ctrl+9 | Switch to tab N |
+| Alt+N | Ctrl+N | New window |
+| Alt+Shift+N | Ctrl+Shift+N | New incognito/private window |
+| Alt+D | Ctrl+D | Bookmark page |
+| Alt+G | Ctrl+G | Find next |
+| Alt+[ | Alt+Left | Browser back |
+| Alt+] | Alt+Right | Browser forward |
 
-> **Note:** Alt+Left/Right in the Chrome address bar or text fields maps to Home/End (beginning/end of line), not browser back/forward. Cmd+[ and Cmd+] are the Mac-style back/forward shortcuts.
+> **Note:** Alt+Left/Right in Chrome maps to Home/End (beginning/end of line) for text editing. Use Alt+[ and Alt+] for browser back/forward navigation.
 
 ---
 
@@ -190,49 +190,49 @@ Includes all global shortcuts plus:
 
 #### Editor
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+P | Ctrl+P | Quick open file |
-| Cmd+Shift+P | Ctrl+Shift+P | Command palette |
-| Cmd+G | Ctrl+G | Go to line |
-| Cmd+D | Ctrl+D | Add selection to next find match |
-| Cmd+L | Ctrl+L | Select line |
-| Cmd+/ | Ctrl+/ | Toggle comment |
-| Cmd+H | Ctrl+H | Find and replace |
-| Cmd+Shift+F | Ctrl+Shift+F | Search across files |
-| Cmd+Shift+K | Ctrl+Shift+K | Delete line |
-| Cmd+, | Ctrl+, | Open settings |
-| Cmd+` | Ctrl+` | Toggle integrated terminal |
-| Cmd+J | Ctrl+J | Toggle bottom panel |
-| Cmd+= / Cmd+- | Ctrl+= / Ctrl+- | Zoom in / out |
-| Cmd+Enter | Ctrl+Enter | Accept suggestion |
+| Alt+P | Ctrl+P | Quick open file |
+| Alt+Shift+P | Ctrl+Shift+P | Command palette |
+| Alt+G | Ctrl+G | Go to line |
+| Alt+D | Ctrl+D | Add selection to next find match |
+| Alt+L | Ctrl+L | Select line |
+| Alt+/ | Ctrl+/ | Toggle comment |
+| Alt+H | Ctrl+H | Find and replace |
+| Alt+Shift+F | Ctrl+Shift+F | Search across files |
+| Alt+Shift+K | Ctrl+Shift+K | Delete line |
+| Alt+, | Ctrl+, | Open settings |
+| Alt+` | Ctrl+` | Toggle integrated terminal |
+| Alt+J | Ctrl+J | Toggle bottom panel |
+| Alt+= / Alt+- | Ctrl+= / Ctrl+- | Zoom in / out |
+| Alt+Enter | Ctrl+Enter | Accept suggestion |
 
 #### Sidebar Panels
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+B | Ctrl+B | Toggle sidebar |
-| Cmd+Shift+E | Ctrl+Shift+E | Explorer panel |
-| Cmd+Shift+G | Ctrl+Shift+G | Source control panel |
-| Cmd+Shift+X | Ctrl+Shift+X | Extensions panel |
-| Cmd+Shift+D | Ctrl+Shift+D | Debug panel |
+| Alt+B | Ctrl+B | Toggle sidebar |
+| Alt+Shift+E | Ctrl+Shift+E | Explorer panel |
+| Alt+Shift+G | Ctrl+Shift+G | Source control panel |
+| Alt+Shift+X | Ctrl+Shift+X | Extensions panel |
+| Alt+Shift+D | Ctrl+Shift+D | Debug panel |
 
 #### Cursor AI (Cursor-specific)
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+K | Ctrl+K | Inline AI edit |
-| Cmd+L | Ctrl+L | Open AI chat panel |
-| Cmd+I | Ctrl+I | AI Agent / Composer |
-| Cmd+Shift+I | Ctrl+Shift+I | Fullscreen Composer |
+| Alt+K | Ctrl+K | Inline AI edit |
+| Alt+L | Ctrl+L | Open AI chat panel |
+| Alt+I | Ctrl+I | AI Agent / Composer |
+| Alt+Shift+I | Ctrl+Shift+I | Fullscreen Composer |
 
 #### Tab Navigation
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+Shift+[ | Ctrl+Shift+Tab | Previous editor tab |
-| Cmd+Shift+] | Ctrl+Tab | Next editor tab |
-| Cmd+1 / 2 / 3 | Ctrl+1 / 2 / 3 | Focus editor group |
+| Alt+Shift+[ | Ctrl+Shift+Tab | Previous editor tab |
+| Alt+Shift+] | Ctrl+Tab | Next editor tab |
+| Alt+1 / 2 / 3 | Ctrl+1 / 2 / 3 | Focus editor group |
 
 ---
 
@@ -244,51 +244,51 @@ A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal.
 
 #### General
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+C | Ctrl+C | Copy |
-| Cmd+V | Ctrl+V | Paste |
-| Cmd+A | Ctrl+A | Select all |
-| Cmd+F | Ctrl+F | Find |
-| Cmd+Z | Ctrl+Z | Undo |
-| Cmd+Q | Alt+F4 | Quit |
-| Cmd+N | Ctrl+N | New window |
-| Cmd+W | Ctrl+W | Close tab |
-| Cmd+Shift+C | Ctrl+Shift+C | Copy command |
-| Cmd+Shift+S | Ctrl+Shift+S | Share block |
+| Alt+C | Ctrl+C | Copy |
+| Alt+V | Ctrl+V | Paste |
+| Alt+A | Ctrl+A | Select all |
+| Alt+F | Ctrl+F | Find |
+| Alt+Z | Ctrl+Z | Undo |
+| Alt+Q | Alt+F4 | Quit |
+| Alt+N | Ctrl+N | New window |
+| Alt+W | Ctrl+W | Close tab |
+| Alt+Shift+C | Ctrl+Shift+C | Copy command |
+| Alt+Shift+S | Ctrl+Shift+S | Share block |
 
 #### Tabs & Panes
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+T | Ctrl+T | New tab |
-| Cmd+Shift+T | Ctrl+Shift+T | Reopen closed tab |
-| Cmd+1 through Cmd+9 | Ctrl+1 through Ctrl+9 | Switch to tab N |
-| Cmd+D | Ctrl+D | Split pane right |
-| Cmd+Shift+D | Ctrl+Shift+D | Split pane down |
-| Cmd+[ | Ctrl+[ | Previous pane |
-| Cmd+] | Ctrl+] | Next pane |
+| Alt+T | Ctrl+T | New tab |
+| Alt+Shift+T | Ctrl+Shift+T | Reopen closed tab |
+| Alt+1 through Alt+9 | Ctrl+1 through Ctrl+9 | Switch to tab N |
+| Alt+D | Ctrl+D | Split pane right |
+| Alt+Shift+D | Ctrl+Shift+D | Split pane down |
+| Alt+[ | Ctrl+[ | Previous pane |
+| Alt+] | Ctrl+] | Next pane |
 
 #### Warp Features
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+P | Ctrl+P | Command palette |
-| Cmd+O | Ctrl+O | File search |
-| Cmd+L | Ctrl+L | Focus terminal input |
-| Cmd+K | Ctrl+K | Clear blocks |
-| Cmd+B | Ctrl+B | Bookmark block |
-| Cmd+= / Cmd+- / Cmd+0 | Ctrl+= / Ctrl+- / Ctrl+0 | Font size controls |
+| Alt+P | Ctrl+P | Command palette |
+| Alt+O | Ctrl+O | File search |
+| Alt+L | Ctrl+L | Focus terminal input |
+| Alt+K | Ctrl+K | Clear blocks |
+| Alt+B | Ctrl+B | Bookmark block |
+| Alt+= / Alt+- / Alt+0 | Ctrl+= / Ctrl+- / Ctrl+0 | Font size controls |
 
 #### Text Navigation
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+Left | Home | Beginning of line |
-| Cmd+Right | End | End of line |
-| Cmd+Shift+Left | Shift+Home | Select to beginning of line |
-| Cmd+Shift+Right | Shift+End | Select to end of line |
-| Cmd+Backspace | Ctrl+Backspace | Delete word left |
+| Alt+Left | Home | Beginning of line |
+| Alt+Right | End | End of line |
+| Alt+Shift+Left | Shift+Home | Select to beginning of line |
+| Alt+Shift+Right | Shift+End | Select to end of line |
+| Alt+Backspace | Ctrl+Backspace | Delete word left |
 
 ---
 
@@ -296,19 +296,19 @@ A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal.
 
 Process names: `windowsterminal`, `powershell`, `cmd`, `wt`, `pwsh`
 
-A conservative profile -- **Cmd+C is intentionally NOT mapped to Ctrl+C** in terminals because Ctrl+C means "interrupt/cancel" in terminal contexts, not "copy."
+A conservative profile -- **Alt+C is intentionally NOT mapped to Ctrl+C** in terminals because Ctrl+C means "interrupt/cancel" in terminal contexts, not "copy."
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+Shift+C | Ctrl+Shift+C | Copy (terminal-safe) |
-| Cmd+Shift+V | Ctrl+Shift+V | Paste (terminal-safe) |
-| Cmd+A | Ctrl+A | Select all |
-| Cmd+Z | Ctrl+Z | Undo (in input) |
-| Cmd+F | Ctrl+F | Find |
-| Cmd+Q | Alt+F4 | Quit |
-| Cmd+Left | Home | Beginning of line |
-| Cmd+Right | End | End of line |
-| Cmd+Backspace | Ctrl+Backspace | Delete word left |
+| Alt+Shift+C | Ctrl+Shift+C | Copy (terminal-safe) |
+| Alt+Shift+V | Ctrl+Shift+V | Paste (terminal-safe) |
+| Alt+A | Ctrl+A | Select all |
+| Alt+Z | Ctrl+Z | Undo (in input) |
+| Alt+F | Ctrl+F | Find |
+| Alt+Q | Alt+F4 | Quit |
+| Alt+Left | Home | Beginning of line |
+| Alt+Right | End | End of line |
+| Alt+Backspace | Ctrl+Backspace | Delete word left |
 
 ---
 
@@ -316,21 +316,21 @@ A conservative profile -- **Cmd+C is intentionally NOT mapped to Ctrl+C** in ter
 
 Process names: `explorer`
 
-| Mac Shortcut | Windows Action | Description |
+| You Press | Windows Receives | Description |
 |---|---|---|
-| Cmd+C | Ctrl+C | Copy |
-| Cmd+V | Ctrl+V | Paste |
-| Cmd+X | Ctrl+X | Cut |
-| Cmd+Z | Ctrl+Z | Undo |
-| Cmd+Shift+Z | Ctrl+Y | Redo |
-| Cmd+A | Ctrl+A | Select all |
-| Cmd+S | Ctrl+S | Save |
-| Cmd+N | Ctrl+N | New window |
-| Cmd+Shift+N | Ctrl+Shift+N | New folder |
-| Cmd+F | Ctrl+F | Search |
-| Cmd+W | Ctrl+W | Close window |
-| Cmd+Q | Alt+F4 | Quit |
-| Cmd+Backspace | Delete | Move to Recycle Bin |
+| Alt+C | Ctrl+C | Copy |
+| Alt+V | Ctrl+V | Paste |
+| Alt+X | Ctrl+X | Cut |
+| Alt+Z | Ctrl+Z | Undo |
+| Alt+Shift+Z | Ctrl+Y | Redo |
+| Alt+A | Ctrl+A | Select all |
+| Alt+S | Ctrl+S | Save |
+| Alt+N | Ctrl+N | New window |
+| Alt+Shift+N | Ctrl+Shift+N | New folder |
+| Alt+F | Ctrl+F | Search |
+| Alt+W | Ctrl+W | Close window |
+| Alt+Q | Alt+F4 | Quit |
+| Alt+Backspace | Delete | Move to Recycle Bin |
 
 > **Note:** Alt+Left/Right are intentionally NOT remapped in Explorer, since their native behavior (back/forward navigation) is useful.
 
@@ -361,7 +361,7 @@ Shortcuts are written as modifier keys joined with `+`, ending with the main key
 
 | Name | Key |
 |---|---|
-| `Alt` | Left Alt (only in triggers -- implicit "Cmd") |
+| `Alt` | Left Alt (triggers only -- this is your "Cmd" key) |
 | `Shift` | Shift |
 | `Ctrl` | Control |
 | `Win` | Windows key (actions only) |
@@ -387,7 +387,7 @@ Shortcuts are written as modifier keys joined with `+`, ending with the main key
 
 ### Trigger Rules
 
-- **Triggers must start with `Alt+`** -- the Alt is your "Cmd" key.
+- **Triggers must start with `Alt+`** -- Left Alt is your "Cmd" key.
 - Additional modifiers (`Shift`, `Ctrl`) can be combined: `Alt+Shift+P`
 - The `Alt` in triggers is always Left Alt. Right Alt (AltGr) is never intercepted.
 
@@ -401,19 +401,19 @@ Shortcuts are written as modifier keys joined with `+`, ending with the main key
 ### Examples
 
 ```json
-// Simple: Cmd+E → Ctrl+E
+// Simple: Alt+E sends Ctrl+E
 { "trigger": "Alt+E", "action": "Ctrl+E" }
 
-// With Shift: Cmd+Shift+P → Ctrl+Shift+P
+// With Shift: Alt+Shift+P sends Ctrl+Shift+P
 { "trigger": "Alt+Shift+P", "action": "Ctrl+Shift+P" }
 
-// To a bare key: Cmd+Left → Home
+// To a bare key: Alt+Left sends Home
 { "trigger": "Alt+Left", "action": "Home" }
 
-// Keep Alt held: Cmd+Q → Alt+F4 (quit)
+// Keep Alt held: Alt+Q sends Alt+F4 (quit)
 { "trigger": "Alt+Q", "action": "Alt+F4" }
 
-// Using Win key: Cmd+Shift+4 → Win+Shift+S (screenshot)
+// Using Win key: Alt+Shift+4 sends Win+Shift+S (screenshot)
 { "trigger": "Alt+Shift+4", "action": "Win+Shift+S" }
 ```
 

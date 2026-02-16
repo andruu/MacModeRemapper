@@ -141,15 +141,13 @@ public sealed class MappingEngine
             return false;
         }
 
-        // Special: Alt+Q = quit app (macOS Cmd+Q). Sends WM_CLOSE directly
-        // instead of synthesizing Alt+F4, which is more reliable across all apps.
+        // Special: Alt+Q = quit app (macOS Cmd+Q). Uses multiple strategies
+        // to close the window reliably across different app types.
         if (e.IsKeyDown && e.VirtualKeyCode == NativeMethods.VK_Q && !_modState.ShiftDown && !_modState.CtrlDown)
         {
-            Logger.Debug("Quit app triggered: Alt+Q -> WM_CLOSE");
+            Logger.Debug("Quit app triggered: Alt+Q");
             CancelAltAndTransition();
-            IntPtr hwnd = NativeMethods.GetForegroundWindow();
-            if (hwnd != IntPtr.Zero)
-                NativeMethods.PostMessage(hwnd, NativeMethods.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            CloseActiveWindow();
             return true;
         }
 
@@ -403,6 +401,34 @@ public sealed class MappingEngine
         }
 
         KeySender.SendBatch(inputs.ToArray());
+    }
+
+    /// <summary>
+    /// Closes the active window using multiple strategies for maximum compatibility.
+    /// Tries WM_SYSCOMMAND SC_CLOSE (Alt+F4 equivalent), then WM_CLOSE,
+    /// then falls back to synthesized Alt+F4 key presses.
+    /// </summary>
+    private static void CloseActiveWindow()
+    {
+        IntPtr hwnd = NativeMethods.GetForegroundWindow();
+        if (hwnd == IntPtr.Zero) return;
+
+        // Strategy 1: WM_SYSCOMMAND SC_CLOSE (exact Alt+F4 equivalent)
+        NativeMethods.PostMessage(hwnd, NativeMethods.WM_SYSCOMMAND, NativeMethods.SC_CLOSE, IntPtr.Zero);
+
+        // Strategy 2: Also send synthesized Alt+F4 for apps that only respond to input
+        Task.Run(async () =>
+        {
+            await Task.Delay(50);
+            var inputs = new[]
+            {
+                KeySender.MakeKeyDown(NativeMethods.VK_LMENU),
+                KeySender.MakeKeyDown(NativeMethods.VK_F4),
+                KeySender.MakeKeyUp(NativeMethods.VK_F4),
+                KeySender.MakeKeyUp(NativeMethods.VK_LMENU),
+            };
+            KeySender.SendBatch(inputs);
+        });
     }
 
     /// <summary>

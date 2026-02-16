@@ -74,6 +74,8 @@ public static class NativeMethods
     public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
     public const uint WM_CLOSE = 0x0010;
+    public const uint WM_SYSCOMMAND = 0x0112;
+    public static readonly IntPtr SC_CLOSE = new IntPtr(0xF060);
     public const int VK_Q = 0x51;
 
     // Hook type

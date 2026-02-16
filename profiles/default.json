@@ -44,6 +44,12 @@
     { "trigger": "Alt+Shift+Down", "action": "Ctrl+Shift+End" },
     { "trigger": "Alt+Backspace", "action": "Ctrl+Backspace" },
 
+    { "trigger": "Alt+Ctrl+Left", "action": "Win+Left" },
+    { "trigger": "Alt+Ctrl+Right", "action": "Win+Right" },
+    { "trigger": "Alt+Ctrl+Up", "action": "Win+Up" },
+    { "trigger": "Alt+Ctrl+Down", "action": "Win+Down" },
+    { "trigger": "Alt+Ctrl+Enter", "action": "Win+Up" },
+
     { "trigger": "Alt+Shift+3", "action": "Win+Shift+S" },
     { "trigger": "Alt+Shift+4", "action": "Win+Shift+S" },
     { "trigger": "Alt+Shift+5", "action": "Win+Shift+S" },

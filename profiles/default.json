@@ -12,6 +12,7 @@
     { "trigger": "Alt+F", "action": "Ctrl+F" },
     { "trigger": "Alt+N", "action": "Ctrl+N" },
     { "trigger": "Alt+W", "action": "Ctrl+W" },
+    { "trigger": "Alt+Shift+W", "action": "Ctrl+Shift+W" },
     { "trigger": "Alt+T", "action": "Ctrl+T" },
     { "trigger": "Alt+P", "action": "Ctrl+P" },
     { "trigger": "Alt+O", "action": "Ctrl+O" },

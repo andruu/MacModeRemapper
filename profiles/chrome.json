@@ -33,7 +33,7 @@
     { "trigger": "Alt+O", "action": "Ctrl+O" },
     { "trigger": "Alt+D", "action": "Ctrl+D" },
     { "trigger": "Alt+Q", "action": "Alt+F4" },
-    { "trigger": "Alt+Shift+V", "action": "Ctrl+Shift+V" },
+    { "trigger": "Alt+Shift+V", "action": "Win+V" },
     { "trigger": "Alt+B", "action": "Ctrl+B" },
     { "trigger": "Alt+I", "action": "Ctrl+I" },
     { "trigger": "Alt+U", "action": "Ctrl+U" },

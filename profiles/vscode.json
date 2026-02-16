@@ -26,7 +26,7 @@
     { "trigger": "Alt+L", "action": "Ctrl+L" },
     { "trigger": "Alt+,", "action": "Ctrl+," },
     { "trigger": "Alt+Shift+K", "action": "Ctrl+Shift+K" },
-    { "trigger": "Alt+Shift+V", "action": "Ctrl+Shift+V" },
+    { "trigger": "Alt+Shift+V", "action": "Win+V" },
     { "trigger": "Alt+Shift+[", "action": "Ctrl+Shift+Tab" },
     { "trigger": "Alt+Shift+]", "action": "Ctrl+Tab" },
     { "trigger": "Alt+1", "action": "Ctrl+1" },

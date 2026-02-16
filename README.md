@@ -120,7 +120,7 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Cmd+Shift+Z | Alt+Shift+Z | Ctrl+Y | Redo |
 | Cmd+S | Alt+S | Ctrl+S | Save |
 | Cmd+Shift+S | Alt+Shift+S | Ctrl+Shift+S | Save as |
-| Cmd+Shift+V | Alt+Shift+V | Ctrl+Shift+V | Paste without formatting |
+| Cmd+Shift+V | Alt+Shift+V | Win+V | Clipboard history |
 | Cmd+Q | Alt+Q | Alt+F4 | Quit app |
 
 #### Text Navigation

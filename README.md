@@ -143,6 +143,8 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Mac Shortcut | You Press | Windows Receives | Description |
 |---|---|---|---|
 | Cmd+` | Alt+` | (built-in) | Cycle windows of the same app |
+| Cmd+M | Alt+M | Win+Down | Minimize window |
+| Cmd+H | Alt+H | Win+Down | Hide/minimize window |
 
 > **Note:** Cmd+` (cycle windows) is a built-in feature of the engine, not a simple key remap. It enumerates all visible windows belonging to the current app and switches to the next one, just like macOS.
 
@@ -160,6 +162,14 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Cmd+I | Alt+I | Ctrl+I | Italic |
 | Cmd+U | Alt+U | Ctrl+U | Underline |
 | Cmd+K | Alt+K | Ctrl+K | Insert link |
+| Cmd+R | Alt+R | Ctrl+R | Refresh |
+| Cmd+L | Alt+L | Ctrl+L | Address bar / select line |
+| Cmd+D | Alt+D | Ctrl+D | Bookmark / add selection |
+| Cmd+G | Alt+G | Ctrl+G | Find next |
+| Cmd+J | Alt+J | Ctrl+J | Downloads / toggle panel |
+| Cmd+, | Alt+, | Ctrl+, | Settings / preferences |
+| Cmd+Shift+T | Alt+Shift+T | Ctrl+Shift+T | Reopen closed tab |
+| Cmd+Shift+N | Alt+Shift+N | Ctrl+Shift+N | New incognito / new folder |
 
 #### Screenshots
 

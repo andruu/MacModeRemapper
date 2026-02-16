@@ -259,6 +259,7 @@ A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal. Warp on W
 | Cmd+A | Alt+A | Ctrl+A | Select all |
 | Cmd+Z | Alt+Z | Ctrl+Z | Undo |
 | Cmd+Shift+Z | Alt+Shift+Z | Ctrl+Shift+Z | Redo |
+| Cmd+W | Alt+W | Ctrl+Shift+W | Close tab/pane |
 | Cmd+Q | Alt+Q | Alt+F4 | Quit |
 | Cmd+Shift+C | Alt+Shift+C | Ctrl+Shift+C | Copy command |
 | Cmd+Shift+S | Alt+Shift+S | Ctrl+Shift+S | Share block |

@@ -122,7 +122,8 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Cmd+S | Alt+S | Ctrl+S | Save |
 | Cmd+Shift+S | Alt+Shift+S | Ctrl+Shift+S | Save as |
 | Cmd+Shift+V | Alt+Shift+V | Win+V | Clipboard history |
-| Cmd+Q | Alt+Q | Alt+F4 | Quit app |
+| Cmd+Shift+W | Alt+Shift+W | Ctrl+Shift+W | Close all tabs / close window |
+| Cmd+Q | Alt+Q | (built-in) | Quit app |
 
 #### Text Navigation
 
@@ -146,7 +147,7 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Cmd+M | Alt+M | Win+Down | Minimize window |
 | Cmd+H | Alt+H | Win+Down | Hide/minimize window |
 
-> **Note:** Cmd+` (cycle windows) is a built-in feature of the engine, not a simple key remap. It enumerates all visible windows belonging to the current app and switches to the next one, just like macOS.
+> **Note:** Cmd+` and Cmd+Q are built-in engine features, not simple key remaps. Cmd+` enumerates all visible windows belonging to the current app and switches to the next one. Cmd+Q sends a close message directly to the window (equivalent to clicking the X button). Both work just like macOS. Cmd+Q may not work on elevated/admin apps like Task Manager.
 
 #### Common App Shortcuts
 
@@ -473,9 +474,10 @@ Get-Process | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object Process
 
 ### Profile Priority
 
-- If a process matches a specific profile, that profile's mappings are used exclusively.
-- If no profile matches, the `default.json` profile is used as a fallback.
-- Per-process profiles **do not** inherit from `default.json`. If you want common shortcuts in a custom profile, include them explicitly.
+- If a process matches a specific profile, that profile's mappings are checked first.
+- If the specific shortcut isn't found in the app profile, it falls back to `default.json`.
+- If no profile matches the process at all, `default.json` is used entirely.
+- This means global shortcuts (like Cmd+C, Cmd+Q, text navigation) work everywhere without being duplicated in every profile.
 
 ---
 
@@ -495,6 +497,7 @@ MacModeRemapper.Core (Class Library)
     MappingEngine.cs       State machine: Idle -> AltPending -> ChordActive
     KeySender.cs           SendInput wrapper (atomic batches)
     ModifierState.cs       Tracks physical Shift/Ctrl/Alt state
+    WindowCycler.cs        Cmd+` same-app window cycling via EnumWindows
   Profiles/
     ProfileManager.cs      Loads JSON profiles, O(1) lookup, FileSystemWatcher
     KeyParser.cs           Parses "Alt+Shift+T" -> VK codes
@@ -570,12 +573,11 @@ Set `"debugLogging": true` in `settings.json` to see detailed key event traces f
 
 | Limitation | Detail |
 |---|---|
-| **Elevated apps** | Cannot remap inside admin/elevated processes unless Mac Mode Remapper is also run as admin |
+| **Elevated apps** | Cannot remap inside admin/elevated processes (Task Manager, PowerToys running as admin, etc.) unless Mac Mode Remapper is also run as admin. Cmd+Q also cannot close elevated windows |
 | **AltGr / International layouts** | Right Alt (AltGr) is explicitly excluded via the extended-key flag. No interference with international characters |
 | **Games** | Some fullscreen DirectX/Vulkan games may not respond to SendInput |
 | **Hook timeout** | Windows enforces a ~300ms timeout on low-level hook callbacks. Extreme system load could cause the OS to silently remove the hook |
 | **Secure desktop** | The hook does not operate on the UAC secure desktop. This is by design |
-| **Profile inheritance** | Per-process profiles do not inherit from default.json. Common shortcuts must be duplicated |
 | **Menu bar flash** | Since Alt passes through before being cancelled, a very brief menu bar highlight may occasionally appear when using chord shortcuts. This is usually imperceptible |
 
 ---

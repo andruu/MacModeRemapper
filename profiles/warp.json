@@ -9,7 +9,7 @@
     { "trigger": "Alt+Z", "action": "Ctrl+Z" },
     { "trigger": "Alt+Shift+Z", "action": "Ctrl+Shift+Z" },
     { "trigger": "Alt+W", "action": "Ctrl+Shift+W" },
-    { "trigger": "Alt+Q", "action": "Alt+F4" },
+    { "trigger": "Alt+Q", "action": "special:close-window" },
 
     { "trigger": "Alt+T", "action": "Ctrl+Shift+T" },
     { "trigger": "Alt+Shift+T", "action": "Ctrl+Alt+T" },

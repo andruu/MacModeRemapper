@@ -7,7 +7,7 @@
     { "trigger": "Alt+A", "action": "Ctrl+A" },
     { "trigger": "Alt+Z", "action": "Ctrl+Z" },
     { "trigger": "Alt+F", "action": "Ctrl+F" },
-    { "trigger": "Alt+Q", "action": "Alt+F4" },
+    { "trigger": "Alt+Q", "action": "special:close-window" },
 
     { "trigger": "Alt+Left", "action": "Home" },
     { "trigger": "Alt+Right", "action": "End" },

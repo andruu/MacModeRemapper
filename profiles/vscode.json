@@ -33,7 +33,7 @@
     { "trigger": "Alt+2", "action": "Ctrl+2" },
     { "trigger": "Alt+3", "action": "Ctrl+3" },
     { "trigger": "Alt+`", "action": "Ctrl+`" },
-    { "trigger": "Alt+Q", "action": "Alt+F4" },
+    { "trigger": "Alt+Q", "action": "special:close-window" },
     { "trigger": "Alt+I", "action": "Ctrl+I" },
     { "trigger": "Alt+Shift+I", "action": "Ctrl+Shift+I" },
     { "trigger": "Alt+Enter", "action": "Ctrl+Enter" },

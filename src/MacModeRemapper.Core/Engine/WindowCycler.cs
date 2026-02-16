@@ -10,6 +10,21 @@ namespace MacModeRemapper.Core.Engine;
 public static class WindowCycler
 {
     /// <summary>
+    /// Closes the active window by sending WM_SYSCOMMAND SC_CLOSE (the exact
+    /// message Alt+F4 generates) followed by WM_CLOSE as a fallback.
+    /// More reliable than synthesized Alt+F4 across different app types.
+    /// </summary>
+    public static void CloseActiveWindow()
+    {
+        IntPtr hwnd = NativeMethods.GetForegroundWindow();
+        if (hwnd == IntPtr.Zero) return;
+
+        Logger.Info($"WindowCycler: closing window 0x{hwnd:X}");
+        NativeMethods.PostMessage(hwnd, NativeMethods.WM_SYSCOMMAND, NativeMethods.SC_CLOSE, IntPtr.Zero);
+        NativeMethods.PostMessage(hwnd, NativeMethods.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+    }
+
+    /// <summary>
     /// Finds all visible top-level windows belonging to the same process
     /// as the current foreground window, then activates the next one in
     /// z-order (the window directly behind the current one).

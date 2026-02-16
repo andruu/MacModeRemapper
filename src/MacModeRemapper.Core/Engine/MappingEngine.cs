@@ -141,26 +141,7 @@ public sealed class MappingEngine
             return false;
         }
 
-        // Special: Alt+Q = quit app (macOS Cmd+Q). Uses multiple strategies
-        // to close the window reliably across different app types.
-        if (e.IsKeyDown && e.VirtualKeyCode == NativeMethods.VK_Q && !_modState.ShiftDown && !_modState.CtrlDown)
-        {
-            Logger.Debug("Quit app triggered: Alt+Q");
-            CancelAltAndTransition();
-            CloseActiveWindow();
-            return true;
-        }
-
-        // Special: Alt+` = cycle windows of the same app (macOS Cmd+`)
-        if (e.IsKeyDown && e.VirtualKeyCode == NativeMethods.VK_OEM_3 && !_modState.ShiftDown)
-        {
-            Logger.Debug("Window cycle triggered: Alt+`");
-            CancelAltAndTransition();
-            WindowCycler.CycleNextWindow();
-            return true;
-        }
-
-        // Non-modifier keydown: check for a chord mapping
+        // Non-modifier keydown: check for a chord mapping (regular or special action)
         if (e.IsKeyDown && !IsModifierKey(e.VirtualKeyCode))
         {
             string processName = _processDetector.GetForegroundProcessName();
@@ -169,21 +150,27 @@ public sealed class MappingEngine
 
             if (mapping != null)
             {
-                bool actionNeedsAlt = mapping.ActionModifierVks.Contains(NativeMethods.VK_LMENU);
-                Logger.Debug($"Chord matched: process={processName}, actionNeedsAlt={actionNeedsAlt}, mapping={mapping}");
+                Logger.Debug($"Chord matched: process={processName}, mapping={mapping}");
 
-                if (actionNeedsAlt)
+                if (mapping.IsSpecialAction)
                 {
-                    // The action wants Alt held (e.g., Alt+Q → Alt+F4).
+                    // Special actions (e.g., close-window, cycle-windows) are dispatched
+                    // via the registry. Cancel Alt first to prevent menu activation.
+                    CancelAltAndTransition();
+                    SpecialActionRegistry.TryExecute(mapping.SpecialActionName!);
+                }
+                else if (mapping.ActionModifierVks.Contains(NativeMethods.VK_LMENU))
+                {
+                    // The action wants Alt held (e.g., Alt+F4).
                     // Physical Alt is already held and passed through, so just
                     // send the key (+ any non-Alt modifiers). Don't touch Alt.
-                    ExecuteMappingKeepAlt(mapping);
+                    BuildAndSendMapping(mapping, keepAlt: true);
                     // Stay in AltPending: Alt is still physically held and the
                     // system still sees it. Normal behavior resumes.
                 }
                 else
                 {
-                    ExecuteMapping(mapping);
+                    BuildAndSendMapping(mapping, cancelAlt: true);
                     _state = State.ChordActive;
                 }
                 MappingActivated?.Invoke($"{mapping}");
@@ -235,17 +222,9 @@ public sealed class MappingEngine
             return false; // Let the key through; system now sees Alt+key
         }
 
-        // Another keydown: check for window cycling or a new chord mapping
+        // Another keydown: check for a new chord mapping (regular or special action)
         if (e.IsKeyDown)
         {
-            // Alt+` window cycling (repeatable while Alt is held)
-            if (e.VirtualKeyCode == NativeMethods.VK_OEM_3 && !_modState.ShiftDown)
-            {
-                Logger.Debug("Window cycle (repeat) triggered in ChordActive");
-                WindowCycler.CycleNextWindow();
-                return true;
-            }
-
             string processName = _processDetector.GetForegroundProcessName();
             var triggerMods = _modState.ActiveModifiers;
             var mapping = _profiles.GetMapping(processName, triggerMods, e.VirtualKeyCode);
@@ -253,7 +232,12 @@ public sealed class MappingEngine
             if (mapping != null)
             {
                 Logger.Debug($"Sequential chord: process={processName}, mapping={mapping}");
-                ExecuteChordInActive(mapping);
+
+                if (mapping.IsSpecialAction)
+                    SpecialActionRegistry.TryExecute(mapping.SpecialActionName!);
+                else
+                    BuildAndSendMapping(mapping);
+
                 MappingActivated?.Invoke($"{mapping}");
                 return true;
             }
@@ -270,150 +254,62 @@ public sealed class MappingEngine
     }
 
     /// <summary>
-    /// Executes a mapping where the action includes Alt as a modifier (e.g., Alt+Q → Alt+F4).
-    /// Physical Alt is already held, so we just send the non-Alt modifiers + action key
-    /// without touching Alt at all.
+    /// Unified mapping execution. Builds a balanced INPUT[] sequence and sends it atomically.
+    ///
+    /// Three modes controlled by parameters:
+    ///   keepAlt=true:  Action needs Alt held (e.g., Alt+F4). Skip synthetic Alt in modifiers.
+    ///   cancelAlt=true: Alt was passed through and must be cancelled (AltPending → ChordActive).
+    ///   Both false:     Alt already cancelled (ChordActive sequential chord).
+    ///
+    /// Handles physical-Shift deconfliction in all modes: if Shift is physically held and the
+    /// action needs Shift, we skip the synthetic Shift press/release. If Shift is physically held
+    /// but the action does NOT need Shift, we temporarily release it.
     /// </summary>
-    private void ExecuteMappingKeepAlt(CompiledMapping mapping)
+    private void BuildAndSendMapping(CompiledMapping mapping, bool cancelAlt = false, bool keepAlt = false)
     {
         var inputs = new List<NativeMethods.INPUT>();
+        bool physicalShiftHeld = _modState.ShiftDown;
+        bool actionNeedsShift = mapping.ActionModifierVks.Contains(NativeMethods.VK_LSHIFT);
+        bool shouldReleaseShift = physicalShiftHeld && !actionNeedsShift && !keepAlt;
 
-        // Send non-Alt action modifiers
+        // Step 1: Press action modifiers (Ctrl, Shift, Win, etc.)
+        // In cancelAlt mode, pressing Ctrl BEFORE releasing Alt prevents menu-bar activation.
         foreach (int modVk in mapping.ActionModifierVks)
         {
-            if (modVk == NativeMethods.VK_LMENU)
+            if (modVk == NativeMethods.VK_LMENU && keepAlt)
                 continue; // Alt is already physically held
-            if (modVk == NativeMethods.VK_LSHIFT && _modState.ShiftDown)
+            if (modVk == NativeMethods.VK_LSHIFT && physicalShiftHeld)
                 continue; // Shift is already physically held
             inputs.Add(KeySender.MakeKeyDown(modVk));
         }
 
-        // Press and release the action key (system sees Alt+key because physical Alt is held)
-        inputs.Add(KeySender.MakeKeyDown(mapping.ActionVk));
-        inputs.Add(KeySender.MakeKeyUp(mapping.ActionVk));
+        // Step 2: Cancel Alt if transitioning from AltPending
+        if (cancelAlt)
+            inputs.Add(KeySender.MakeKeyUp(NativeMethods.VK_LMENU));
 
-        // Release non-Alt action modifiers
-        foreach (int modVk in mapping.ActionModifierVks.Reverse())
-        {
-            if (modVk == NativeMethods.VK_LMENU)
-                continue;
-            if (modVk == NativeMethods.VK_LSHIFT && _modState.ShiftDown)
-                continue;
-            inputs.Add(KeySender.MakeKeyUp(modVk));
-        }
-
-        KeySender.SendBatch(inputs.ToArray());
-    }
-
-    /// <summary>
-    /// Executes a mapping from AltPending state. Physical Alt was passed through,
-    /// so we need to cancel it first, then send the replacement chord.
-    /// Sends: [Ctrl down, Alt up, key down, key up, Ctrl up]
-    /// Ctrl arrives before Alt up, preventing menu-bar activation.
-    /// </summary>
-    private void ExecuteMapping(CompiledMapping mapping)
-    {
-        var inputs = new List<NativeMethods.INPUT>();
-
-        // Determine which action modifiers we need to send synthetically.
-        // If Shift is physically held and the action needs Shift, skip synthetic Shift
-        // to avoid double-press/release issues.
-        bool physicalShiftHeld = _modState.ShiftDown;
-        bool actionNeedsShift = mapping.ActionModifierVks.Contains(NativeMethods.VK_LSHIFT);
-
-        // Step 1: Press action modifiers (e.g., Ctrl) BEFORE releasing Alt
-        // This prevents menu-bar activation (menu only activates if Alt is released
-        // with no other modifier held).
-        foreach (int modVk in mapping.ActionModifierVks)
-        {
-            if (modVk == NativeMethods.VK_LSHIFT && physicalShiftHeld)
-                continue; // Shift is already physically down
-            inputs.Add(KeySender.MakeKeyDown(modVk));
-        }
-
-        // Step 2: Release physical Alt (cancel the Alt we let through)
-        inputs.Add(KeySender.MakeKeyUp(NativeMethods.VK_LMENU));
-
-        // Step 3: If Shift is physically held but action does NOT need Shift, release it temporarily
-        if (physicalShiftHeld && !actionNeedsShift)
-        {
+        // Step 3: Temporarily release Shift if held but not needed by the action
+        if (shouldReleaseShift)
             inputs.Add(KeySender.MakeKeyUp(NativeMethods.VK_LSHIFT));
-        }
 
         // Step 4: Press and release the action key
         inputs.Add(KeySender.MakeKeyDown(mapping.ActionVk));
         inputs.Add(KeySender.MakeKeyUp(mapping.ActionVk));
 
         // Step 5: Restore Shift if we released it
-        if (physicalShiftHeld && !actionNeedsShift)
-        {
+        if (shouldReleaseShift)
             inputs.Add(KeySender.MakeKeyDown(NativeMethods.VK_LSHIFT));
-        }
 
-        // Step 6: Release action modifiers
+        // Step 6: Release action modifiers (reverse order)
         foreach (int modVk in mapping.ActionModifierVks.Reverse())
         {
-            if (modVk == NativeMethods.VK_LSHIFT && physicalShiftHeld)
-                continue; // Don't release Shift; it's physically held
-            inputs.Add(KeySender.MakeKeyUp(modVk));
-        }
-
-        KeySender.SendBatch(inputs.ToArray());
-    }
-
-    /// <summary>
-    /// Executes a mapping while already in ChordActive state (sequential chord).
-    /// Alt was already synthetically released, so we just send the replacement chord.
-    /// </summary>
-    private void ExecuteChordInActive(CompiledMapping mapping)
-    {
-        var inputs = new List<NativeMethods.INPUT>();
-
-        bool physicalShiftHeld = _modState.ShiftDown;
-        bool actionNeedsShift = mapping.ActionModifierVks.Contains(NativeMethods.VK_LSHIFT);
-
-        // Press action modifiers
-        foreach (int modVk in mapping.ActionModifierVks)
-        {
-            if (modVk == NativeMethods.VK_LSHIFT && physicalShiftHeld)
+            if (modVk == NativeMethods.VK_LMENU && keepAlt)
                 continue;
-            inputs.Add(KeySender.MakeKeyDown(modVk));
-        }
-
-        // Release Shift if physically held but not needed
-        if (physicalShiftHeld && !actionNeedsShift)
-            inputs.Add(KeySender.MakeKeyUp(NativeMethods.VK_LSHIFT));
-
-        // Press and release action key
-        inputs.Add(KeySender.MakeKeyDown(mapping.ActionVk));
-        inputs.Add(KeySender.MakeKeyUp(mapping.ActionVk));
-
-        // Restore Shift if we released it
-        if (physicalShiftHeld && !actionNeedsShift)
-            inputs.Add(KeySender.MakeKeyDown(NativeMethods.VK_LSHIFT));
-
-        // Release action modifiers
-        foreach (int modVk in mapping.ActionModifierVks.Reverse())
-        {
             if (modVk == NativeMethods.VK_LSHIFT && physicalShiftHeld)
                 continue;
             inputs.Add(KeySender.MakeKeyUp(modVk));
         }
 
         KeySender.SendBatch(inputs.ToArray());
-    }
-
-    /// <summary>
-    /// Closes the active window. Sends WM_SYSCOMMAND SC_CLOSE (the exact
-    /// message Alt+F4 generates) followed by WM_CLOSE as a fallback.
-    /// </summary>
-    private static void CloseActiveWindow()
-    {
-        IntPtr hwnd = NativeMethods.GetForegroundWindow();
-        if (hwnd == IntPtr.Zero) return;
-
-        NativeMethods.PostMessage(hwnd, NativeMethods.WM_SYSCOMMAND, NativeMethods.SC_CLOSE, IntPtr.Zero);
-        NativeMethods.PostMessage(hwnd, NativeMethods.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
     }
 
     /// <summary>

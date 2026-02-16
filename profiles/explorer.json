@@ -13,7 +13,7 @@
     { "trigger": "Alt+Shift+N", "action": "Ctrl+Shift+N" },
     { "trigger": "Alt+F", "action": "Ctrl+F" },
     { "trigger": "Alt+W", "action": "Ctrl+W" },
-    { "trigger": "Alt+Q", "action": "Alt+F4" },
+    { "trigger": "Alt+Q", "action": "special:close-window" },
     { "trigger": "Alt+Backspace", "action": "Delete" }
   ]
 }

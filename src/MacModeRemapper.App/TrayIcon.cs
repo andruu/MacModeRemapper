@@ -1,12 +1,9 @@
 using System.Drawing;
-using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 using MacModeRemapper.Core.Engine;
 using MacModeRemapper.Core.Hook;
 using MacModeRemapper.Core.Logging;
-using MacModeRemapper.Core.ProcessDetection;
-using MacModeRemapper.Core.Profiles;
 using MacModeRemapper.Core.Settings;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 using ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem;
@@ -16,57 +13,35 @@ using ToolStripSeparator = System.Windows.Forms.ToolStripSeparator;
 namespace MacModeRemapper.App;
 
 /// <summary>
-/// Manages the system tray icon, context menu, and orchestrates all core components.
+/// Manages the system tray icon and context menu. Receives all core
+/// dependencies via constructor injection from <see cref="AppBootstrapper"/>.
 /// </summary>
 public sealed class TrayIcon : IDisposable
 {
+    private static readonly TimeSpan SuspendDuration = TimeSpan.FromMinutes(10);
+
     private readonly NotifyIcon _notifyIcon;
     private readonly ContextMenuStrip _contextMenu;
     private readonly ToolStripMenuItem _toggleItem;
     private readonly ToolStripMenuItem _suspendItem;
     private readonly ToolStripMenuItem _startOnLoginItem;
 
-    private readonly KeyboardHook _hook;
+    private readonly AppBootstrapper _app;
     private readonly MappingEngine _engine;
-    private readonly ProfileManager _profiles;
-    private readonly ForegroundProcessDetector _processDetector;
     private readonly SettingsManager _settings;
+    private readonly KeyboardHook _hook;
 
     private DispatcherTimer? _suspendTimer;
     private bool _disposed;
 
-    public TrayIcon()
+    public TrayIcon(AppBootstrapper app)
     {
-        // Resolve paths
-        string baseDir = AppContext.BaseDirectory;
-        string profilesDir = Path.Combine(baseDir, "profiles");
-        string settingsPath = Path.Combine(baseDir, "settings.json");
+        _app = app;
+        _engine = app.Engine;
+        _settings = app.Settings;
+        _hook = app.Hook;
 
-        // If running from dev (bin/Debug/...), look for profiles at solution root
-        if (!Directory.Exists(profilesDir))
-        {
-            string devProfilesDir = FindProfilesDir(baseDir);
-            if (Directory.Exists(devProfilesDir))
-                profilesDir = devProfilesDir;
-        }
-
-        // Initialize components
-        Logger.Initialize(enableDebug: true);
-
-        _settings = new SettingsManager(settingsPath);
-        _settings.Load();
-        Logger.SetDebugEnabled(_settings.Current.DebugLogging);
-
-        _profiles = new ProfileManager(profilesDir);
-        _profiles.Load();
-        _profiles.StartWatching();
-
-        _processDetector = new ForegroundProcessDetector();
-        _engine = new MappingEngine(_profiles, _processDetector);
-        _engine.Enabled = _settings.Current.MacModeEnabled;
         _engine.PanicKeyPressed += OnPanicKey;
-
-        _hook = new KeyboardHook();
         _hook.KeyEvent += OnKeyEvent;
 
         // Build tray menu
@@ -162,7 +137,7 @@ public sealed class TrayIcon : IDisposable
 
         _suspendTimer = new DispatcherTimer
         {
-            Interval = TimeSpan.FromMinutes(10)
+            Interval = SuspendDuration
         };
         _suspendTimer.Tick += (_, _) =>
         {
@@ -230,22 +205,6 @@ public sealed class TrayIcon : IDisposable
         return Icon.FromHandle(bmp.GetHicon());
     }
 
-    /// <summary>
-    /// Walks up from the bin directory to find the profiles folder at solution root.
-    /// </summary>
-    private static string FindProfilesDir(string startDir)
-    {
-        string? dir = startDir;
-        for (int i = 0; i < 8 && dir != null; i++)
-        {
-            string candidate = Path.Combine(dir, "profiles");
-            if (Directory.Exists(candidate))
-                return candidate;
-            dir = Path.GetDirectoryName(dir);
-        }
-        return Path.Combine(startDir, "profiles");
-    }
-
     public void Dispose()
     {
         if (_disposed) return;
@@ -253,11 +212,9 @@ public sealed class TrayIcon : IDisposable
 
         _suspendTimer?.Stop();
         _hook.KeyEvent -= OnKeyEvent;
-        _hook.Dispose();
-        _profiles.Dispose();
         _notifyIcon.Visible = false;
         _notifyIcon.Dispose();
         _contextMenu.Dispose();
-        Logger.Shutdown();
+        _app.Dispose();
     }
 }

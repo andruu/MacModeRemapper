@@ -10,6 +10,11 @@ namespace MacModeRemapper.Core.Profiles;
 /// </summary>
 public sealed class ProfileManager : IDisposable
 {
+    private const double DebounceSeconds = 2.0;
+    private const int MaxReloadRetries = 5;
+    private const int ReloadRetryBaseDelayMs = 300;
+    private const string SpecialActionPrefix = "special:";
+
     private readonly string _profilesDir;
     private FileSystemWatcher? _watcher;
 
@@ -129,8 +134,7 @@ public sealed class ProfileManager : IDisposable
 
     private void ReloadDebounced()
     {
-        // Debounce: don't reload more than once per 2 seconds
-        if ((DateTime.UtcNow - _lastReload).TotalSeconds < 2)
+        if ((DateTime.UtcNow - _lastReload).TotalSeconds < DebounceSeconds)
             return;
 
         _lastReload = DateTime.UtcNow;
@@ -140,21 +144,18 @@ public sealed class ProfileManager : IDisposable
         // The FileSystemWatcher often fires while the writing process still holds the file.
         Task.Run(async () =>
         {
-            const int maxRetries = 5;
-            const int delayMs = 300;
-
-            for (int attempt = 1; attempt <= maxRetries; attempt++)
+            for (int attempt = 1; attempt <= MaxReloadRetries; attempt++)
             {
                 try
                 {
-                    await Task.Delay(delayMs * attempt);
+                    await Task.Delay(ReloadRetryBaseDelayMs * attempt);
                     Load();
                     return;
                 }
                 catch (Exception ex)
                 {
-                    if (attempt == maxRetries)
-                        Logger.Error($"Failed to reload profiles after {maxRetries} attempts: {ex.Message}");
+                    if (attempt == MaxReloadRetries)
+                        Logger.Error($"Failed to reload profiles after {MaxReloadRetries} attempts: {ex.Message}");
                     else
                         Logger.Debug($"Reload attempt {attempt} failed (file may be locked), retrying...");
                 }
@@ -171,15 +172,29 @@ public sealed class ProfileManager : IDisposable
             try
             {
                 var (trigMods, trigVk) = KeyParser.ParseTrigger(dto.Trigger);
-                var (actModVks, actVk) = KeyParser.ParseAction(dto.Action);
 
-                var compiled = new CompiledMapping
+                CompiledMapping compiled;
+                if (dto.Action.StartsWith(SpecialActionPrefix, StringComparison.OrdinalIgnoreCase))
                 {
-                    TriggerModifiers = trigMods,
-                    TriggerVk = trigVk,
-                    ActionModifierVks = actModVks,
-                    ActionVk = actVk
-                };
+                    string actionName = dto.Action.Substring(SpecialActionPrefix.Length);
+                    compiled = new CompiledMapping
+                    {
+                        TriggerModifiers = trigMods,
+                        TriggerVk = trigVk,
+                        SpecialActionName = actionName
+                    };
+                }
+                else
+                {
+                    var (actModVks, actVk) = KeyParser.ParseAction(dto.Action);
+                    compiled = new CompiledMapping
+                    {
+                        TriggerModifiers = trigMods,
+                        TriggerVk = trigVk,
+                        ActionModifierVks = actModVks,
+                        ActionVk = actVk
+                    };
+                }
 
                 result[(trigMods, trigVk)] = compiled;
             }

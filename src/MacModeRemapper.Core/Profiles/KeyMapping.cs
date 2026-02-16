@@ -32,5 +32,16 @@ public sealed class CompiledMapping
     /// <summary>The virtual key code to press for the action.</summary>
     public int ActionVk { get; init; }
 
-    public override string ToString() => $"Trigger=({TriggerModifiers}+VK 0x{TriggerVk:X2}) -> Action=(Mods[{string.Join(",", ActionModifierVks.Select(v => $"0x{v:X2}"))}]+VK 0x{ActionVk:X2})";
+    /// <summary>
+    /// If non-null, this mapping invokes a named special action (e.g., "close-window")
+    /// instead of sending a key chord. Set when the action string uses the "special:" prefix.
+    /// </summary>
+    public string? SpecialActionName { get; init; }
+
+    /// <summary>True when this mapping triggers a special action rather than a key chord.</summary>
+    public bool IsSpecialAction => !string.IsNullOrEmpty(SpecialActionName);
+
+    public override string ToString() => IsSpecialAction
+        ? $"Trigger=({TriggerModifiers}+VK 0x{TriggerVk:X2}) -> Special({SpecialActionName})"
+        : $"Trigger=({TriggerModifiers}+VK 0x{TriggerVk:X2}) -> Action=(Mods[{string.Join(",", ActionModifierVks.Select(v => $"0x{v:X2}"))}]+VK 0x{ActionVk:X2})";
 }

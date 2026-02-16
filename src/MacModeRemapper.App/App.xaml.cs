@@ -26,7 +26,8 @@ public partial class App : System.Windows.Application
 
         try
         {
-            _trayIcon = new TrayIcon();
+            var bootstrapper = new AppBootstrapper();
+            _trayIcon = new TrayIcon(bootstrapper);
         }
         catch (Exception ex)
         {

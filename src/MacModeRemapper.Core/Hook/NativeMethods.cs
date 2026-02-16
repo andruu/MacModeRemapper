@@ -68,6 +68,14 @@ public static class NativeMethods
     public const uint GW_OWNER = 4;
     public const int VK_OEM_3 = 0xC0; // ` / ~ key
 
+    // Window messaging
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    public const uint WM_CLOSE = 0x0010;
+    public const int VK_Q = 0x51;
+
     // Hook type
     public const int WH_KEYBOARD_LL = 13;
 

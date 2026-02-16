@@ -141,6 +141,18 @@ public sealed class MappingEngine
             return false;
         }
 
+        // Special: Alt+Q = quit app (macOS Cmd+Q). Sends WM_CLOSE directly
+        // instead of synthesizing Alt+F4, which is more reliable across all apps.
+        if (e.IsKeyDown && e.VirtualKeyCode == NativeMethods.VK_Q && !_modState.ShiftDown && !_modState.CtrlDown)
+        {
+            Logger.Debug("Quit app triggered: Alt+Q -> WM_CLOSE");
+            CancelAltAndTransition();
+            IntPtr hwnd = NativeMethods.GetForegroundWindow();
+            if (hwnd != IntPtr.Zero)
+                NativeMethods.PostMessage(hwnd, NativeMethods.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            return true;
+        }
+
         // Special: Alt+` = cycle windows of the same app (macOS Cmd+`)
         if (e.IsKeyDown && e.VirtualKeyCode == NativeMethods.VK_OEM_3 && !_modState.ShiftDown)
         {

@@ -141,6 +141,15 @@ public sealed class MappingEngine
             return false;
         }
 
+        // Special: Alt+` = cycle windows of the same app (macOS Cmd+`)
+        if (e.IsKeyDown && e.VirtualKeyCode == NativeMethods.VK_OEM_3 && !_modState.ShiftDown)
+        {
+            Logger.Debug("Window cycle triggered: Alt+`");
+            CancelAltAndTransition();
+            WindowCycler.CycleNextWindow();
+            return true;
+        }
+
         // Non-modifier keydown: check for a chord mapping
         if (e.IsKeyDown && !IsModifierKey(e.VirtualKeyCode))
         {
@@ -364,6 +373,23 @@ public sealed class MappingEngine
         }
 
         KeySender.SendBatch(inputs.ToArray());
+    }
+
+    /// <summary>
+    /// Cancels the physical Alt that was passed through (sends Ctrl down, Alt up, Ctrl up
+    /// to suppress menu activation) and transitions to ChordActive state.
+    /// Used by special actions like window cycling that aren't regular key mappings.
+    /// </summary>
+    private void CancelAltAndTransition()
+    {
+        var inputs = new[]
+        {
+            KeySender.MakeKeyDown(NativeMethods.VK_LCONTROL),
+            KeySender.MakeKeyUp(NativeMethods.VK_LMENU),
+            KeySender.MakeKeyUp(NativeMethods.VK_LCONTROL),
+        };
+        KeySender.SendBatch(inputs);
+        _state = State.ChordActive;
     }
 
     private void UpdateModifierState(KeyboardHookEventArgs e)

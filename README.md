@@ -137,6 +137,14 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Cmd+Shift+Down | Alt+Shift+Down | Ctrl+Shift+End | Select to end of document |
 | Cmd+Backspace | Alt+Backspace | Ctrl+Backspace | Delete word left |
 
+#### Window Management
+
+| Mac Shortcut | You Press | Windows Receives | Description |
+|---|---|---|---|
+| Cmd+` | Alt+` | (built-in) | Cycle windows of the same app |
+
+> **Note:** Cmd+` (cycle windows) is a built-in feature of the engine, not a simple key remap. It enumerates all visible windows belonging to the current app and switches to the next one, just like macOS.
+
 #### Common App Shortcuts
 
 | Mac Shortcut | You Press | Windows Receives | Description |

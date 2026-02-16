@@ -129,21 +129,37 @@ public sealed class ProfileManager : IDisposable
 
     private void ReloadDebounced()
     {
-        // Debounce: don't reload more than once per second
-        if ((DateTime.UtcNow - _lastReload).TotalSeconds < 1)
+        // Debounce: don't reload more than once per 2 seconds
+        if ((DateTime.UtcNow - _lastReload).TotalSeconds < 2)
             return;
 
         _lastReload = DateTime.UtcNow;
         Logger.Info("Profile file change detected, reloading...");
 
-        try
+        // Retry with delay to handle file-lock race conditions.
+        // The FileSystemWatcher often fires while the writing process still holds the file.
+        Task.Run(async () =>
         {
-            Load();
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Failed to reload profiles: {ex.Message}");
-        }
+            const int maxRetries = 5;
+            const int delayMs = 300;
+
+            for (int attempt = 1; attempt <= maxRetries; attempt++)
+            {
+                try
+                {
+                    await Task.Delay(delayMs * attempt);
+                    Load();
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    if (attempt == maxRetries)
+                        Logger.Error($"Failed to reload profiles after {maxRetries} attempts: {ex.Message}");
+                    else
+                        Logger.Debug($"Reload attempt {attempt} failed (file may be locked), retrying...");
+                }
+            }
+        });
     }
 
     private static Dictionary<(ModifierFlags, int), CompiledMapping> CompileMappings(List<KeyMappingDto> dtos)

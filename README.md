@@ -247,20 +247,19 @@ Includes all global shortcuts plus:
 
 Process names: `warp`
 
-A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal.
+A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal. Warp on Windows uses **Ctrl+Shift** for most common operations (copy, paste, find, new tab) because Ctrl+C must remain "interrupt/cancel" in terminal contexts. This profile handles that translation automatically -- you just press the same keys you would on a Mac and it works.
 
-#### General
+#### Fundamentals
 
 | Mac Shortcut | You Press | Windows Receives | Description |
 |---|---|---|---|
-| Cmd+C | Alt+C | Ctrl+C | Copy |
-| Cmd+V | Alt+V | Ctrl+V | Paste |
-| Cmd+A | Alt+A | Ctrl+A | Select all |
-| Cmd+F | Alt+F | Ctrl+F | Find |
+| Cmd+C | Alt+C | Ctrl+Shift+C | Copy |
+| Cmd+V | Alt+V | Ctrl+Shift+V | Paste |
+| Cmd+F | Alt+F | Ctrl+Shift+F | Find |
+| Cmd+A | Alt+A | Ctrl+Shift+A | Select all blocks |
 | Cmd+Z | Alt+Z | Ctrl+Z | Undo |
+| Cmd+Shift+Z | Alt+Shift+Z | Ctrl+Shift+Z | Redo |
 | Cmd+Q | Alt+Q | Alt+F4 | Quit |
-| Cmd+N | Alt+N | Ctrl+N | New window |
-| Cmd+W | Alt+W | Ctrl+W | Close tab |
 | Cmd+Shift+C | Alt+Shift+C | Ctrl+Shift+C | Copy command |
 | Cmd+Shift+S | Alt+Shift+S | Ctrl+Shift+S | Share block |
 
@@ -268,23 +267,26 @@ A dedicated profile for the [Warp](https://www.warp.dev/) AI terminal.
 
 | Mac Shortcut | You Press | Windows Receives | Description |
 |---|---|---|---|
-| Cmd+T | Alt+T | Ctrl+T | New tab |
-| Cmd+Shift+T | Alt+Shift+T | Ctrl+Shift+T | Reopen closed tab |
+| Cmd+T | Alt+T | Ctrl+Shift+T | New tab |
+| Cmd+Shift+T | Alt+Shift+T | Ctrl+Alt+T | Reopen closed tab |
 | Cmd+1 through Cmd+9 | Alt+1 through Alt+9 | Ctrl+1 through Ctrl+9 | Switch to tab N |
-| Cmd+D | Alt+D | Ctrl+D | Split pane right |
-| Cmd+Shift+D | Alt+Shift+D | Ctrl+Shift+D | Split pane down |
-| Cmd+[ | Alt+[ | Ctrl+[ | Previous pane |
-| Cmd+] | Alt+] | Ctrl+] | Next pane |
+| Cmd+Shift+[ | Alt+Shift+[ | Ctrl+PageUp | Previous tab |
+| Cmd+Shift+] | Alt+Shift+] | Ctrl+PageDown | Next tab |
+| Cmd+D | Alt+D | Ctrl+Shift+D | Split pane right |
+| Cmd+Shift+D | Alt+Shift+D | Ctrl+Shift+E | Split pane down |
+| Cmd+[ | Alt+[ | Ctrl+Shift+[ | Previous pane |
+| Cmd+] | Alt+] | Ctrl+Shift+] | Next pane |
 
 #### Warp Features
 
 | Mac Shortcut | You Press | Windows Receives | Description |
 |---|---|---|---|
-| Cmd+P | Alt+P | Ctrl+P | Command palette |
-| Cmd+O | Alt+O | Ctrl+O | File search |
-| Cmd+L | Alt+L | Ctrl+L | Focus terminal input |
-| Cmd+K | Alt+K | Ctrl+K | Clear blocks |
-| Cmd+B | Alt+B | Ctrl+B | Bookmark block |
+| Cmd+P | Alt+P | Ctrl+Shift+P | Command palette |
+| Cmd+L | Alt+L | Ctrl+Shift+L | Focus terminal input |
+| Cmd+K | Alt+K | Ctrl+Shift+K | Clear blocks |
+| Cmd+B | Alt+B | Ctrl+Shift+B | Bookmark block |
+| Cmd+I | Alt+I | Ctrl+Shift+I | Reinput selected commands |
+| Cmd+, | Alt+, | Ctrl+, | Open settings |
 | Cmd+= / Cmd+- / Cmd+0 | Alt+= / Alt+- / Alt+0 | Ctrl+= / Ctrl+- / Ctrl+0 | Font size controls |
 
 #### Text Navigation

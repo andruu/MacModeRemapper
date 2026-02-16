@@ -145,11 +145,6 @@ These are the default fallback mappings. They apply to any app that doesn't have
 | Cmd+` | Alt+` | (built-in) | Cycle windows of the same app |
 | Cmd+M | Alt+M | Win+Down | Minimize window |
 | Cmd+H | Alt+H | Win+Down | Hide/minimize window |
-| Ctrl+Opt+Left | Ctrl+Alt+Left | Win+Left | Snap window left (Magnet) |
-| Ctrl+Opt+Right | Ctrl+Alt+Right | Win+Right | Snap window right (Magnet) |
-| Ctrl+Opt+Up | Ctrl+Alt+Up | Win+Up | Maximize (Magnet) |
-| Ctrl+Opt+Down | Ctrl+Alt+Down | Win+Down | Minimize / bottom half (Magnet) |
-| Ctrl+Opt+Enter | Ctrl+Alt+Enter | Win+Up | Maximize (Magnet) |
 
 > **Note:** Cmd+` (cycle windows) is a built-in feature of the engine, not a simple key remap. It enumerates all visible windows belonging to the current app and switches to the next one, just like macOS.
 

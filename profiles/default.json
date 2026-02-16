@@ -35,6 +35,8 @@
 
     { "trigger": "Alt+Shift+3", "action": "Win+Shift+S" },
     { "trigger": "Alt+Shift+4", "action": "Win+Shift+S" },
-    { "trigger": "Alt+Shift+5", "action": "Win+Shift+S" }
+    { "trigger": "Alt+Shift+5", "action": "Win+Shift+S" },
+
+    { "trigger": "Alt+Shift+0", "action": "Win+Shift+0" }
   ]
 }

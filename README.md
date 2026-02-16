@@ -46,6 +46,7 @@ When you press a shortcut like **Alt+C** (which your brain thinks of as **Cmd+C*
 | **Alt+Tab** | Never translated -- works natively |
 | **Alt+F4** | Never translated -- works natively |
 | **Alt+Space** | Never translated -- window menu works normally |
+| **Alt+`** | Cycles between windows of the same app (like Cmd+` on Mac) |
 
 The app uses per-process profiles. When you're in Chrome, browser-specific shortcuts are active. When you switch to VS Code, editor shortcuts take over. Unrecognized apps fall back to the default profile.
 
